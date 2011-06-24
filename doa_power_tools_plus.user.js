@@ -4,10 +4,10 @@
 // @description   Enhanced tools for Dragons of Atlantis
 // @include       http://*.castle.wonderhill.com/*
 // @include       http://apps.facebook.com/dragonsofatlantis/*
-// @version       20110623b
+// @version       20110624a
 // ==/UserScript==
 
-var Version = '20110623c';
+var Version = '20110624a';
 var Title = 'DOA Power Tools Plus';
 var WebSite = 'http://userscripts.org/scripts/show/104301';
 var VERSION_CHECK_HOURS = 4;
@@ -56,7 +56,7 @@ var OptionsDefaults = {
   ptWinPos     : {},
   campAttack   : {enabled:false, repeatTime:3601, delayMin:30, delayMax:60, levelEnable:[], levelDist:[null,10,10,10,10,10,10,10,10,10,10], deleteCampAttacks:false, stopAttackOnLoss:false, logAttacks:true, maxMarches:10},
   currentTab  : false,
-  autoCollect : {enabled:false, lastTime:0, delay:1},
+  autoCollect : {enabled:false, lastTime:0, delay:1, unit:3600},
   autoBuild   : {enabled:false, buildingEnable:[] },
   autoResearch: {enabled:false, researchEnable:[] },
   autoTrain   : {enabled:false, trainingEnable:[], qty:0 },
@@ -1805,7 +1805,6 @@ t.addMarch (rslt.dat.result.job);
 
   
   scanMap : function (radius, notify){
-  alert ('scanMap'); // DELETE
     var t = Tabs.AutoAttack;
     Data.targets = {radius:0, center:{x:Seed.s.cities[0].x, y:Seed.s.cities[0].y}, camps:[]};
     var dial = new ModalDialog (t.cont, 300, 165, '', false, null);
@@ -2171,7 +2170,7 @@ var AutoCollect = {
     clearTimeout (t.timer);
     Data.options.autoCollect.enabled = onOff;
     if (onOff){
-      var time = (Data.options.autoCollect.delay*3600) - serverTime() + Data.options.autoCollect.lastTime;
+      var time = (Data.options.autoCollect.delay*Data.options.autoCollect.unit) - serverTime() + Data.options.autoCollect.lastTime;
       if (time <= 0)
         t.doit ();
       else
@@ -2183,7 +2182,7 @@ var AutoCollect = {
     Data.options.autoCollect.lastTime = serverTime();
     for (var out=1; out<Seed.s.cities.length; out++)
       collect (out, out*30000);
-    t.timer = setTimeout (t.doit, ((Data.options.autoCollect.delay*3600) + (Math.random()*120))*1000);
+    t.timer = setTimeout (t.doit, ((Data.options.autoCollect.delay*Data.options.autoCollect.unit) + (Math.random()*120))*1000);
     function collect (cityIdx, delay){
       setTimeout (function(){
         Ajax.collectResources (Seed.s.cities[cityIdx].id);
@@ -3440,17 +3439,44 @@ Tabs.Options = {
   init : function (div){
     var t = Tabs.Options;
     t.cont = div;
+	
+	var selected = new Array(4);
+	for (var i = 0; i < selected.length; i++)
+		selected[i] = '';
+	switch (Data.options.autoCollect.unit) {
+		case 1:
+			selected[1] = 'selected';
+			break
+		case 60:
+			selected[2] = 'selected';
+			break;
+		case 3600:
+			selected[3] = 'selected';
+			break;
+		case 86400:
+			selected[4] = 'selected';
+			break;
+		default:
+			selected[3] = 'selected';
+	}
+	
     try {      
       m = '<DIV class=pbTitle style="margin-bottom:10px">DOA Power Tools Options</div><TABLE class=pbTab>\
         <TR valign=top><TD colspan=2><B>Config:</b></td></tr>\
         <TR valign=top><TD><INPUT id=ptAllowWinMove type=checkbox /></td><TD>Enable window drag (move window by dragging <BR>top bar with mouse)</td></tr>\
         <TR valign=top><TD colspan=2><B><BR>Features:</b></td></tr>\
-        <TR><TD><INPUT id=pboptACol type=checkbox /></td><TD>Auto-collect resources at outpost every <INPUT id=pboptAColTime size=1 maxlength=2 type=text value="'+ Data.options.autoCollect.delay +'" /> hour(s)</td></tr>\
-        </table><BR><HR>';
+        <TR><TD><INPUT id=pboptACol type=checkbox /></td><TD>Auto-collect resources at outpost every <INPUT id=pboptAColTime size=1 maxlength=2 type=text value="'+ Data.options.autoCollect.delay +'" /></TD><TD>\
+		<SELECT id=pboptAColUnit size=1>\
+		<OPTION value=1 '+selected[1]+'>Second(s)</OPTION>\
+        <OPTION value=60 '+selected[2]+'>Minute(s)</OPTION>\
+        <OPTION value=3600 '+selected[3]+'>Hour(s)</OPTION>\
+        <OPTION value=86400 '+selected[4]+'>Day(s)</OPTION>\
+        </SELECT></TD></TR></table><BR><HR>';
       t.cont.innerHTML = m;
       t.togOpt ('ptAllowWinMove', Data.options.ptWinDrag, mainPop.setEnableDrag);
       t.togOpt ('pboptACol', Data.options.autoCollect.enabled, AutoCollect.setEnable);
 	  document.getElementById('pboptAColTime').addEventListener ('change', t.timeChanged, false);
+	  document.getElementById('pboptAColUnit').addEventListener ('change', t.unitChanged, false);
     } catch (e) {
       t.cont.innerHTML = '<PRE>'+ e.name +' : '+ e.message +'</pre>';  
     }
@@ -3461,6 +3487,13 @@ Tabs.Options = {
     var time = parseIntZero (etime.value);
     etime.value = time;
     Data.options.autoCollect.delay = time;
+  },
+  
+  unitChanged : function (e){
+    var eunit = document.getElementById('pboptAColUnit');
+    var unit = parseIntZero (eunit.value);
+    eunit.value = unit;
+    Data.options.autoCollect.unit = unit;
   },
   
   hide : function (){
