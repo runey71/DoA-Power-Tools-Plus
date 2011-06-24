@@ -25,6 +25,216 @@ var ENABLE_JOB_TAB = false;
 
 var IsChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
 
+
+// Translation strings - will use preprocessor #ifdef to create translations
+
+// Terrain types
+var kAnthropusCamp = 'Anthropus Camp';
+var kCity = 'City';
+var kOutpost = 'Outpost';
+var kSavanna = 'Savanna';
+var kSwamp = 'Swamp';
+var kLake = 'Lake';
+var kHill = 'Hill';
+var kPlain = 'Plain';
+var kMountain = 'Mountain';
+var kForest = 'Forest';
+
+// Buildings
+var kFarm = 'Farm';
+var kHome = 'Home';
+var kMine = 'Mine';
+var kSilo = 'Silo';
+var kWall = 'Wall';
+var kQuarry = 'Quarry';
+var kFactory = 'Factory';
+var kRookery = 'Rookery';
+var kTheater = 'Theater';
+var kFortress = 'Fortress';
+var kGarrison = 'Garrison';
+var kSentinel = 'Sentinel';
+var kLumbermill = 'Lumbermill';
+var kDragonKeep = 'DragonKeep';
+var kMetalsmith = 'Metalsmith';
+var kMusterPoint = 'MusterPoint';
+var kStorageVault = 'StorageVault';
+var kTrainingCamp = 'TrainingCamp';
+var kScienceCenter = 'ScienceCenter';
+var kOfficerQuarter = 'OfficerQuarter';
+
+// Troops
+var kPorter = 'Porter';
+var kConscript = 'Conscript';
+var kSpy = 'Spy';
+var kSpies = 'Spies';
+var kHalberdsman = 'Halberdsman';
+var kHalberdsmen = 'Halberdsmen';
+var kMinotaur = 'Minotaur';
+var kLongbowman = 'Longbowman';
+var kLongbowmen = 'Longbowmen';
+var kSwiftStrikeDragon = 'SwiftStrikeDragon';
+var kBattleDragon = 'BattleDragon';
+var kArmoredTransport = 'ArmoredTransport';
+var kGiant = 'Giant';
+var kFireMirror = 'FireMirror';
+var kAquaTroop = 'AquaTroop';
+var kStoneTroop = 'StoneTroop';
+var kGreatDragon = 'GreatDragon';
+var kWaterDragon = 'WaterDragon';
+var kStoneDragon = 'StoneDragon';
+
+// Troop abbreviations
+var kConscr = 'Conscr';
+var kHalbrd = 'Halbrd';
+var kMino = 'Mino';
+var kLBM = 'LBM';
+var kSSDrg = 'SSDrg';
+var kBatDrg = 'BatDrg';
+var kATrans = 'ATrans';
+var kFireM = 'FireM';
+var kGrtDrg = 'GrtDrg';
+var kWatDrg = 'WatDrg';
+var kStnDrg = 'StnDrg';
+var kFang = 'Fang';
+var kOgre = 'Ogre';
+
+// Tabs
+var kInfo = 'Info';
+var kWave = 'Wave';
+var kAttack = 'Attack';
+var kTrain = 'Train';
+var kBuild = 'Build';
+var kMaps = 'Maps';
+var kLog = 'Log';
+var kOpts = 'Opts';
+
+// Items
+var kAquaTroopRespirator = 'AquaTroopRespirator';
+
+// Error messages
+var kFatalSWF = '"<B>Error initializing DOA Power Tools mod by Wham:</b><BR><BR>Unable to find SWF element"';
+var kStartupErr = '"Unable to start DOA Power Tools mod by Wham:<BR>"';
+var kInitErr = '"<B>Error initializing DOA Power Tools mod by Wham:</b><BR><BR>"';
+var kNoTargetTroops = 'No targets/troops available';
+var kErrSendAttack = 'ERROR! (sendAttack is busy, no response from server?)';
+var kAttackErr = 'Attack Error: ';
+var kNoTroopsDefined = 'No Troops Defined';
+var kNotEnough = 'Not enough ';
+var kMusterPointFull = 'Muster Point Full';
+var kNoGenerals = 'No Generals Available';
+var kInvalidDelay = 'Invalid delay(s)';
+var kErrScanningMap = '<B>Bummer, there was an error while scanning the map.</b>';
+var kBuildErr = 'BUILD ERROR: ';
+var kTooManyBuildErrs = 'Too many errors, disabling auto-build';
+var kMaxMarchesReached = 'User-set maximum marches reached.';
+var kSafetyFeature = 'Safety Feature: Auto-Attack turned off';
+var kSelectLevelsReminder = 'Use the Levels Tab to select attack areas';
+
+// User interface
+var kAttack1 = 'Attack ';
+var kAttack2 = 'Attacks: ';
+var kAttackNow = '"Attack Now"';
+var kSkipAttack = '"Skip Attack"';
+var kWaveTitle = 'Attack One Target in Waves';
+var kAttackStatsTitle = 'Auto-attack Stats';
+var kClearStats = '"Clear Stats"';
+var kTroopsLost = 'Troops lost! (';
+var kAutoOn = 'Auto ON';
+var kAutoOff = 'Auto OFF';
+var kAttackingLevel = 'Attacking level ';
+var kCampAt = ' camp at ';
+var kAttackSent = 'Attack sent to level ';
+var kAutoAttack = 'Auto-attack ';
+var kAutoAttackConfig = 'Auto-attack Configuration';
+var kRandomDelay = 'Random delay between attacks:';
+var kDOAVersionString = 'DOA Power Tools mod by Wham - v';
+var kTo = ' to ';
+var kSeconds = ' seconds ';
+var kSameTargetDelay = 'Same target delay: ';
+var kTwentyMinutes = ' 20 minutes';
+var kOneHour = ' 1 hour';
+var kLogAttacks = 'Log attacks: ';
+var kDeleteMarchReports = 'Delete March Reports: ';
+var kStopOnLoss = 'Stop if any troops lost: ';
+var kMaxMarches = 'Maximum simultaneous marches: ';
+var kRescanMap = '" Rescan Map "';
+var kFirstValue = 'First value must be between ';
+var kSecondValue = ' and 3600<BR>Second value must be at least 5 above the first value.';
+var kLastAttack = 'Last Attack';
+var kSendingAttack = 'Sending Attack';
+var kOK = 'OK';
+var kMapping = 'Mapping';
+var kMapTypes = '" Map Types "';
+var kTargets = '" Targets "';
+var kConfig = '"Config"';
+var kStats = '"Stats"';
+var kMapCategories = 'Map Categories';
+var kSearch = '" Search "';
+var kTransferMap = '" Transfer to Attack "';
+var kScanningMap = 'Scanning map within 35 miles<BR>This should take about a minute';
+var kList = ' List';
+var kDistance = 'Dist';
+var kCoords = 'Coords';
+var kLvl = 'Lvl';
+var kCityName = 'City Name';
+var kLord = 'Lord';
+var kPower = 'Power';
+var kAlliance = 'Alliance';
+var kLevels = ' Levels';
+var kTraining = 'Training:';
+var kTraining1 = 'Training ';
+var kResearch = 'Research:';
+var kAutoBuildOn = 'Auto Build ON';
+var kAutoBuildOff = 'Auto Build OFF';
+var kCityNumber = 'City #';
+var kLevel = 'level ';
+var kLevel1 = ' Level';
+var kNothingToDo = 'Nothing to do, disabling auto-build.';
+var kBuildingLevel = 'Building level ';
+var kBuilding = 'Building:';
+var kBuilding1 = 'Building ';
+var kIdle = 'idle';
+var kAt = ' at ';
+var kOptions = 'Options';
+var kEnableDrag = 'Enable window drag (move window by dragging <BR>top bar with mouse)';
+var kFeatures = 'Features: ';
+var kCancel = '"CANCEL"';
+var kContinue = '"CONTINUE"';
+var kAutoRetry = 'Automatic retry in ';
+var kSeconds1 =  'seconds ...';
+var kCancelRetry = '"CANCEL Retry"';
+var kNewVersionAvailable = 'New Version Available!';
+var kAnnounceVersion = 'There is a new version of DOA Power Tools mod by Wham<BR><BR>Version: ';
+var kRemindLater = '"Remind me later"';
+var kNoReminder = '"Don\'t remind me again"';
+var kTargetCoords = 'Target Coords: ';
+var kDistance1 = 'Distance: ';
+var kWaveTroops = 'Troops for Wave Attack: ';
+var kDeleteBattleReports = ' Delete battle reports:';
+var kDelayBetweenAttacks = 'Delay Between attacks: ';
+var kResetStats = '"Reset Stats"';
+var kGot = ': Got ';
+var kRunTime = 'Run Time: ';
+var kAttackOn = 'Attacks ON';
+var kAttackOff = 'Attacks OFF';
+var kError = 'Error: ';
+var kStatsStarted = 'Stats started at: ';
+var kResources = 'Resources: ';
+var kStatsBy = 'Stats by ';
+var kEnable = 'Enable: ';
+var kDistanceWarning = 'Distance must be between 1 and ';
+var kTroopWarning = 'Invalid # of troops';
+var kMaxDist = 'Max Dist: ';
+var kRefresh = '"refresh"';
+var kDefending = 'DEFENDING';
+var kSanctuary = 'HIDING';
+var kMarches = 'Marches:';
+var kTroops = 'Troops';
+var kGenerals = 'Generals';
+var kUnits = 'units';
+var kAutoCollectAt = 'Auto-collect resources from outpost(s) every: ';
+
+// Gobal variables
 var Tabs = {};
 var currentName = 'Info';
 var mainPop;
