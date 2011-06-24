@@ -20,6 +20,18 @@ var ENABLE_DEBUG_TAB = false;
 var ENABLE_WINLOG = false;
 var ALERT_ON_BAD_DATA = false;
 
+// Tab order
+var INFO_TAB_ORDER = 1;
+var WAVE_TAB_ORDER = 2;
+var ATTACK_TAB_ORDER = 3;
+var JOB_TAB_ORDER = 4;  // Holding position for future job tab
+var BUILD_TAB_ORDER = 5;
+var RESEARCH_TAB_ORDER = 6; // Holding position for research tab
+var TRAIN_TAB_ORDER = 7;
+var LOG_TAB_ORDER = 7;
+var OPTIONS_TAB_ORDER = 8;
+var DEBUG_TAB_ORDER = 99;
+
 // Enable/Disable tabs
 var ENABLE_JOB_TAB = false;
 
@@ -3639,100 +3651,99 @@ function getTrainJob (cityIdx){
 }
 
 /*********************************** Options Tab ***********************************/
-
 Tabs.Options = {
-  tabOrder : 40,
-  tabLabel : 'Opts',
+  tabOrder : OPTIONS_TAB_ORDER,
+  tabLabel : kOpts,
   cont : null,
   fixAvailable : {},
 
-  init : function (div){
-    var t = Tabs.Options;
-    t.cont = div;
-	
-	var selected = new Array(4);
-	for (var i = 0; i < selected.length; i++)
-		selected[i] = '';
-	switch (Data.options.autoCollect.unit) {
-		case 1:
-			selected[1] = 'selected';
-			break
-		case 60:
-			selected[2] = 'selected';
-			break;
-		case 3600:
-			selected[3] = 'selected';
-			break;
-		case 86400:
-			selected[4] = 'selected';
-			break;
-		default:
-			selected[3] = 'selected';
-	}
-	
-    try {      
-      m = '<DIV class=pbTitle style="margin-bottom:10px">DOA Power Tools Options</div><TABLE class=pbTab>\
-        <TR valign=top><TD colspan=2><B>Config:</b></td></tr>\
-        <TR valign=top><TD><INPUT id=ptAllowWinMove type=checkbox /></td><TD>Enable window drag (move window by dragging <BR>top bar with mouse)</td></tr>\
-        <TR valign=top><TD colspan=2><B><BR>Features:</b></td></tr>\
-        <TR><TD><INPUT id=pboptACol type=checkbox /></td><TD>Auto-collect resources at outpost every <INPUT id=pboptAColTime size=1 maxlength=2 type=text value="'+ Data.options.autoCollect.delay +'" /></TD><TD>\
-		<SELECT id=pboptAColUnit size=1>\
-		<OPTION value=1 '+selected[1]+'>Second(s)</OPTION>\
-        <OPTION value=60 '+selected[2]+'>Minute(s)</OPTION>\
-        <OPTION value=3600 '+selected[3]+'>Hour(s)</OPTION>\
-        <OPTION value=86400 '+selected[4]+'>Day(s)</OPTION>\
-        </SELECT></TD></TR></table><BR><HR>';
-      t.cont.innerHTML = m;
-      t.togOpt ('ptAllowWinMove', Data.options.ptWinDrag, mainPop.setEnableDrag);
-      t.togOpt ('pboptACol', Data.options.autoCollect.enabled, AutoCollect.setEnable);
-	  document.getElementById('pboptAColTime').addEventListener ('change', t.timeChanged, false);
-	  document.getElementById('pboptAColUnit').addEventListener ('change', t.unitChanged, false);
-    } catch (e) {
-      t.cont.innerHTML = '<PRE>'+ e.name +' : '+ e.message +'</pre>';  
-    }
-  },
+	init : function (div){
+		var t = Tabs.Options;
+		t.cont = div;
+
+		var selected = new Array(4);
+		for (var i = 0; i < selected.length; i++)
+			selected[i] = '';
+		switch (Data.options.autoCollect.unit) {
+			case 1:
+				selected[1] = 'selected';
+				break
+			case 60:
+				selected[2] = 'selected';
+				break;
+			case 3600:
+				selected[3] = 'selected';
+				break;
+			case 86400:
+				selected[4] = 'selected';
+				break;
+			default:
+				selected[3] = 'selected';
+		}
+
+		try {      
+			m = '<DIV class=pbTitle style="margin-bottom:10px">'+ kOptions +'</div><TABLE class=pbTab>\
+				<TR valign=top><TD colspan=2><B>Config:</B></TD></TR>\
+				<TR valign=top><TD><INPUT id=ptAllowWinMove type=checkbox /></TD><TD>'+ kEnableDrag +'</TD></TR>\
+				<TR valign=top><TD colspan=2><B><BR>'+ kFeatures +'</B></TD></TR>\
+				<TR><TD><INPUT id=pboptACol type=checkbox /></TD><TD>'+ kAutoCollectAt +'<INPUT id=pboptAColTime size=1 maxlength=2 type=text value="'+ Data.options.autoCollect.delay +'" /></TD><TD>\
+				<SELECT id=pboptAColUnit size=1>\
+				<OPTION value=1 '+selected[1]+'>Second(s)</OPTION>\
+				<OPTION value=60 '+selected[2]+'>Minute(s)</OPTION>\
+				<OPTION value=3600 '+selected[3]+'>Hour(s)</OPTION>\
+				<OPTION value=86400 '+selected[4]+'>Day(s)</OPTION>\
+				</SELECT></TD></TR></TABLE><BR><HR>';
+			t.cont.innerHTML = m;
+			t.togOpt ('ptAllowWinMove', Data.options.ptWinDrag, mainPop.setEnableDrag);
+			t.togOpt ('pboptACol', Data.options.autoCollect.enabled, AutoCollect.setEnable);
+			document.getElementById('pboptAColTime').addEventListener ('change', t.timeChanged, false);
+			document.getElementById('pboptAColUnit').addEventListener ('change', t.unitChanged, false);
+		} catch (e) {
+			t.cont.innerHTML = '<PRE>'+ e.name +' : '+ e.message +'</pre>';  
+		}
+	},
   
-  timeChanged : function (e){
-    var etime = document.getElementById('pboptAColTime');
-    var time = parseIntZero (etime.value);
-    etime.value = time;
-    Data.options.autoCollect.delay = time;
-  },
+	timeChanged : function (e){
+		var etime = document.getElementById('pboptAColTime');
+		var time = parseIntZero (etime.value);
+		etime.value = time;
+		Data.options.autoCollect.delay = time;
+	},
   
-  unitChanged : function (e){
-    var eunit = document.getElementById('pboptAColUnit');
-    var unit = parseIntZero (eunit.value);
-    eunit.value = unit;
-    Data.options.autoCollect.unit = unit;
-  },
+	unitChanged : function (e){
+		var eunit = document.getElementById('pboptAColUnit');
+		var unit = parseIntZero (eunit.value);
+		eunit.value = unit;
+		Data.options.autoCollect.unit = unit;
+	},
   
-  hide : function (){
-  },
-  show : function (){
-  },
+	hide : function (){
+	},
   
-  togOpt : function (checkboxId, optionVar, callEnable, callIsAvailable){
-    var t = Tabs.Options;
-    var checkbox = document.getElementById(checkboxId);
-    
-    if (callIsAvailable && callIsAvailable()==false){
-      checkbox.disabled = true;
-      return;
-    }
-    if (optionVar)
-      checkbox.checked = true;
-    checkbox.addEventListener ('change', new eventToggle(checkboxId, optionVar, callEnable).handler, false);
-    function eventToggle (checkboxId, optionVar, callOnChange){
-      this.handler = handler;
-      var optVar = optionVar;
-      var callback = callOnChange;
-      function handler(event){
-        optVar = this.checked;
-        if (callback != null)
-          callback (this.checked);
-      }
-    }
-  },
+	show : function (){
+	},
+  
+	togOpt : function (checkboxId, optionVar, callEnable, callIsAvailable){
+		var t = Tabs.Options;
+		var checkbox = document.getElementById(checkboxId);
+		if (callIsAvailable && callIsAvailable()==false){
+			checkbox.disabled = true;
+			return;
+		}
+		if (optionVar)
+			checkbox.checked = true;
+		checkbox.addEventListener ('change', new eventToggle(checkboxId, optionVar, callEnable).handler, false);
+		function eventToggle (checkboxId, optionVar, callOnChange){
+			this.handler = handler;
+			var optVar = optionVar;
+			var callback = callOnChange;
+			function handler(event){
+				optVar = this.checked;
+				if (callback != null)
+					callback (this.checked);
+			}
+		}
+	},
 }
 
 
